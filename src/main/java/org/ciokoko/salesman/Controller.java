@@ -18,6 +18,8 @@ import org.ciokoko.salesman.optimalization.LocalSearch;
 import org.ciokoko.salesman.optimalization.OptimalizationAlgorithm;
 import org.ciokoko.salesman.util.CityParser;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -103,10 +105,15 @@ class Controller {
 
     private static List<List<City>> divideAndArrangeCitiesPair(DivisionAlgorithmType algorithmType, List<City> cities) {
         List<List<City>> lists = CityDivider.divideCitiesToEqualPair(cities, algorithmType);
-
+        Instant startTime = Instant.now();
         OptimalizationAlgorithm alg = new LocalSearch();
-        List<City> orderedCities = alg.arrangePoints(lists.get(0));
-        List<City> orderedCities2 = alg.arrangePoints(lists.get(1));
+        List<City> orderedCities = new ArrayList<>();
+        List<City> orderedCities2 = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            orderedCities = alg.arrangePoints(lists.get(0));
+            orderedCities2 = alg.arrangePoints(lists.get(1));
+        }
+        System.out.println("100x Local Search Time: " + Duration.between(startTime, Instant.now()));
         return Arrays.asList(orderedCities, orderedCities2);
     }
 

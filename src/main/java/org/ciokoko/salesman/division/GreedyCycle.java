@@ -7,16 +7,18 @@ import java.util.*;
 
 public class GreedyCycle implements DivisionAlgorithm {
 
-    public GreedyCycle() {
+    private final City startPoint;
+
+    public GreedyCycle(City startPoint) {
+        this.startPoint = startPoint;
     }
 
     @Override
     public City nextPoint(List<City> points, City actualPoint) {
-
         Map<City, Double> distanceLengths = new HashMap<>();
         points.forEach(point -> {
             double summaryDistance = EuclideanDistanceCalculator.calcForCities(actualPoint, point) + EuclideanDistanceCalculator
-                    .calcForCities(points.get(0), point);
+                    .calcForCities(startPoint, point);
             distanceLengths.put(point, summaryDistance);
         });
         Map.Entry<City, Double> min = Collections.min(distanceLengths.entrySet(), Comparator.comparing(Map.Entry::getValue));

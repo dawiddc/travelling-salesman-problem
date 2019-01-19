@@ -12,6 +12,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        Controller.show(DivisionAlgorithmType.GREEDY_CYCLE);
+        Controller.show(DivisionAlgorithmType.NEAREST_NEIGHBOUR);
     }
 }
