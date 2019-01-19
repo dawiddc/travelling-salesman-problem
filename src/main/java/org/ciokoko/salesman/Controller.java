@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 import org.ciokoko.salesman.division.CityDivider;
 import org.ciokoko.salesman.division.DivisionAlgorithmType;
 import org.ciokoko.salesman.model.City;
-import org.ciokoko.salesman.optimalization.LocalSearch;
+import org.ciokoko.salesman.optimalization.IterativeLocalSearch;
 import org.ciokoko.salesman.optimalization.OptimalizationAlgorithm;
 import org.ciokoko.salesman.util.CityParser;
 
@@ -106,10 +106,11 @@ class Controller {
     private static List<List<City>> divideAndArrangeCitiesPair(DivisionAlgorithmType algorithmType, List<City> cities) {
         List<List<City>> lists = CityDivider.divideCitiesToEqualPair(cities, algorithmType);
         Instant startTime = Instant.now();
-        OptimalizationAlgorithm alg = new LocalSearch();
+//        OptimalizationAlgorithm alg = new LocalSearch();
+        OptimalizationAlgorithm alg = new IterativeLocalSearch();
         List<City> orderedCities = new ArrayList<>();
         List<City> orderedCities2 = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 1; i++) {
             orderedCities = alg.arrangePoints(lists.get(0));
             orderedCities2 = alg.arrangePoints(lists.get(1));
         }
