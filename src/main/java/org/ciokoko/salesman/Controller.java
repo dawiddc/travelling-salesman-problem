@@ -4,6 +4,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -15,7 +16,9 @@ import org.ciokoko.salesman.division.CityDivider;
 import org.ciokoko.salesman.division.DivisionAlgorithmType;
 import org.ciokoko.salesman.model.City;
 import org.ciokoko.salesman.optimalization.IterativeLocalSearch;
+import org.ciokoko.salesman.optimalization.LocalSearch;
 import org.ciokoko.salesman.optimalization.OptimalizationAlgorithm;
+import org.ciokoko.salesman.optimalization.OptimalizationAlgorithmType;
 import org.ciokoko.salesman.util.CityParser;
 
 import java.time.Duration;
@@ -28,7 +31,7 @@ class Controller {
 
     private Controller() {}
 
-    static void show(DivisionAlgorithmType algorithmType) {
+    static void show(DivisionAlgorithmType algorithmType, OptimalizationAlgorithmType optimalizationAlgorithmType) {
         Stage primaryStage = new Stage();
         BorderPane mainRoot = new BorderPane();
         mainRoot.setPadding(new Insets(14));
@@ -38,7 +41,7 @@ class Controller {
         List<City> cities = createCities();
         List<Circle> circles = createCircles(cities);
         drawCircles(root, circles);
-        List<List<City>> citiesPair = divideAndArrangeCitiesPair(algorithmType, cities);
+        List<List<City>> citiesPair = divideAndArrangeCitiesPair(algorithmType, optimalizationAlgorithmType, cities);
         for (Line line : joinPoints(citiesPair.get(0), Color.BLUE)) {
             root.getChildren().add(line);
         }
@@ -74,11 +77,17 @@ class Controller {
 
     private static List<Circle> createCircles(List<City> cities) {
         List<Circle> circles = new ArrayList<>();
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setRadius(5.0);
+        dropShadow.setOffsetX(3.0);
+        dropShadow.setOffsetY(3.0);
+        dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
         cities.forEach(city -> {
             Circle circle = new Circle();
+            circle.setEffect(dropShadow);
             circle.setCenterX(city.getX());
             circle.setCenterY(city.getY());
-            circle.setRadius(12);
+            circle.setRadius(18);
             circle.setFill(Color.BLACK);
             circles.add(circle);
         });
@@ -89,25 +98,27 @@ class Controller {
         circles.forEach(circle -> {
             Scale scale = new Scale();
             Label label = new Label(Integer.toString(circles.indexOf(circle)));
-            final double MAX_FONT_SIZE = 10.0;
+            final double MAX_FONT_SIZE = 18.0;
             label.setFont(new Font(MAX_FONT_SIZE));
             scale.setX(0.3);
             scale.setY(0.3);
             scale.setPivotX(80);
             scale.setPivotY(40);
-            label.setLayoutX(circle.getCenterX() * 0.3 + 40);
-            label.setLayoutY(circle.getCenterY() * 0.3 + 20);
+            label.setLayoutX(circle.getCenterX() * 0.3 + 30);
+            label.setLayoutY(circle.getCenterY() * 0.3 + 15);
             circle.getTransforms().addAll(scale);
             root.getChildren().add(circle);
             root.getChildren().add(label);
         });
     }
 
-    private static List<List<City>> divideAndArrangeCitiesPair(DivisionAlgorithmType algorithmType, List<City> cities) {
+    private static List<List<City>> divideAndArrangeCitiesPair(DivisionAlgorithmType algorithmType, OptimalizationAlgorithmType optimalizationAlgorithmType, List<City> cities) {
         List<List<City>> lists = CityDivider.divideCitiesToEqualPair(cities, algorithmType);
         Instant startTime = Instant.now();
-//        OptimalizationAlgorithm alg = new LocalSearch();
-        OptimalizationAlgorithm alg = new IterativeLocalSearch();
+        OptimalizationAlgorithm alg = new LocalSearch();
+        if (OptimalizationAlgorithmType.ITERATIVE_LOCAL_SEARCH.equals(optimalizationAlgorithmType)) {
+            alg = new IterativeLocalSearch();
+        }
         List<City> orderedCities = new ArrayList<>();
         List<City> orderedCities2 = new ArrayList<>();
         for (int i = 0; i < 1; i++) {
@@ -132,7 +143,7 @@ class Controller {
             line.setEndX(orderedCities.get(next).getX());
             line.setEndY(orderedCities.get(next).getY());
             line.setStroke(color);
-            line.setStrokeWidth(5);
+            line.setStrokeWidth(10);
             line.setVisible(true);
             scale.setX(0.3);
             scale.setY(0.3);

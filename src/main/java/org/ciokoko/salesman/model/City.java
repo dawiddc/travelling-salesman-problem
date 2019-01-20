@@ -13,16 +13,8 @@ public class City {
         return x;
     }
 
-    public void setX(Double x) {
-        this.x = x;
-    }
-
     public double getY() {
         return y;
-    }
-
-    public void setY(Double y) {
-        this.y = y;
     }
 
     public static class CityBuilder {

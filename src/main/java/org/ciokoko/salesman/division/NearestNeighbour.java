@@ -7,7 +7,7 @@ import java.util.*;
 
 public class NearestNeighbour implements DivisionAlgorithm {
 
-    public NearestNeighbour() {}
+    NearestNeighbour() {}
 
     @Override
     public City nextPoint(List<City> points, City actualPoint) {

@@ -3,6 +3,7 @@ package org.ciokoko.salesman;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import org.ciokoko.salesman.division.DivisionAlgorithmType;
+import org.ciokoko.salesman.optimalization.OptimalizationAlgorithmType;
 
 public class Main extends Application {
 
@@ -12,6 +13,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        Controller.show(DivisionAlgorithmType.GREEDY_CYCLE);
+        Controller.show(DivisionAlgorithmType.NEAREST_NEIGHBOUR,
+                OptimalizationAlgorithmType.ITERATIVE_LOCAL_SEARCH);
     }
 }
